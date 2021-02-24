@@ -2,9 +2,14 @@ require('dotenv').config();
 var Discord = require('discord.js');
 var logger = require('winston');
 const axios = require('axios');
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
 
 var token = process.env.token;
 var serverName = process.env.serverName;
+const backupPath = process.env.backupLocation;
+const db = `${backupPath}/${process.env.backupFileName}.db`;
+const fwl = `${backupPath}/${process.env.backupFileName}.fwl`;
 var prefix = '!';
 
 logger.remove(logger.transports.Console);
@@ -29,6 +34,27 @@ bot.on('message', async (message) => {
   switch (command) {
     case 'help':
       message.channel.send('**Stats** \n !stats');
+      break;
+
+    case 'backup':
+      console.log('member ', message.member);
+      if (message.member.roles.find((role) => role.name === 'Admin')) {
+        // back back back it up
+        const date = new Date();
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+        const dateFmt = `${year}-${month}-${day}`;
+        const newFile = `${process.env.backupLocation}-${datefmt}.tar.gz`;
+        const { stdout, stderr } = await exec(
+          `tar -cvzf ${newFile} ${db} ${fwl}`
+        );
+        console.log('stdout:', stdout);
+        console.log('stderr:', stderr);
+        message.channel.send(`World successfully backed up as ${newFile}`);
+      } else {
+        message.channel.send('YOUR NOT MY DAD!');
+      }
       break;
 
     case 'stats':
