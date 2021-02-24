@@ -18,9 +18,9 @@
   },
   "homepage": "https://github.com/JacobMillner/valheim-discord-bot#readme",
   "dependencies": {
+    "axios": "^0.21.1",
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
-    "unirest": "^0.6.0",
     "winston": "^3.3.3"
   }
 }
