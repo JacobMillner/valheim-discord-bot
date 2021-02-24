@@ -20,7 +20,7 @@ bot.once('ready', function (evt) {
 
 bot.login(token);
 
-bot.on('message', (message) => {
+bot.on('message', async (message) => {
   if (!message.content.startsWith(prefix) || message.author.bot) return;
 
   const args = message.content.slice(prefix.length).split(' ');
@@ -32,46 +32,29 @@ bot.on('message', (message) => {
       break;
 
     case 'stats':
-      var query = args[0];
-      console.log(
-        `https://api.battlemetrics.com/servers?filter[search]="${serverName}"`
-      );
+      const query = args[0];
+      const uri = `https://api.battlemetrics.com/servers?filter[search]="${serverName}"`;
+      console.log(uri);
 
-      axios
-        .get(
-          `https://api.battlemetrics.com/servers?filter[search]="${serverName}"`
-        )
-        .then(function (response) {
-          // handle success
-          var json = JSON.parse(JSON.stringify(response.data));
-          if (response.status != 200) {
-            message.reply(
-              'An error occurred while trying to make the API request!'
-            );
-          } else {
-            console.log(json);
-            var i = 1;
-            message.channel.send('**Server Stats for  ' + serverName + '**:');
-            json.data.map((data) => {
-              message.channel.send(
-                '\tServer ID: ' +
-                  data.id +
-                  '\n' +
-                  '\tGame: ' +
-                  data.relationships.game.data.id +
-                  '\n' +
-                  '\tServer IP: ' +
-                  data.attributes.ip +
-                  '\n' +
-                  '\tPlayers: ' +
-                  data.attributes.players +
-                  '\n' +
-                  '\tServer Rank: ' +
-                  data.attributes.rank
-              );
-            });
-          }
+      const resp = await axios.get(uri);
+      var json = JSON.parse(JSON.stringify(resp.data));
+      if (resp.status != 200) {
+        message.reply(
+          'An error occurred while trying to make the API request!'
+        );
+      } else {
+        console.log('resp data:', json);
+        message.channel.send('**Server Stats for  ' + serverName + '**:');
+        json.data.map((data) => {
+          message.channel.send(
+            `Server ID: ${data.id}
+            Game: ${data.relationships.game.data.id}
+            Server IP: ${data.attributes.ip}
+            Players: ${data.attributes.player}
+            Server Rank: ${data.attributes.rank}`
+          );
         });
+      }
       break;
 
     default:
