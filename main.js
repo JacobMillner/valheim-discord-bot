@@ -37,21 +37,26 @@ bot.on('message', async (message) => {
       break;
 
     case 'backup':
-      console.log('member ', message.member);
-      if (message.member.roles.find((role) => role.name === 'Admin')) {
+      if (message.member.hasPermission('ADMINISTRATOR')) {
         // back back back it up
-        const date = new Date();
-        const year = date.getFullYear();
-        const month = date.getMonth() + 1;
-        const day = date.getDate();
-        const dateFmt = `${year}-${month}-${day}`;
-        const newFile = `${process.env.backupLocation}-${datefmt}.tar.gz`;
-        const { stdout, stderr } = await exec(
-          `tar -cvzf ${newFile} ${db} ${fwl}`
-        );
-        console.log('stdout:', stdout);
-        console.log('stderr:', stderr);
-        message.channel.send(`World successfully backed up as ${newFile}`);
+        try {
+          const date = new Date();
+          const year = date.getFullYear();
+          const month = date.getMonth() + 1;
+          const day = date.getDate();
+          const dateFmt = `${year}-${month}-${day}`;
+          const newFile = `${process.env.backupLocation}-${dateFmt}.tar.gz`;
+          const { stdout, stderr } = await exec(
+            `tar -cvzf ${newFile} ${db} ${fwl}`
+          );
+          console.log('stdout:', stdout);
+          console.log('stderr:', stderr);
+          message.channel.send(`World successfully backed up as ${newFile}`);
+        } catch (err) {
+          console.log('Error backing up world.');
+          console.log(err);
+          message.channel.send('Oops... I broke it.');
+        }
       } else {
         message.channel.send('YOUR NOT MY DAD!');
       }
