@@ -45,9 +45,9 @@ bot.on('message', async (message) => {
           const month = date.getMonth() + 1;
           const day = date.getDate();
           const dateFmt = `${year}-${month}-${day}`;
-          const newFile = `${process.env.backupLocation}-${dateFmt}.tar.gz`;
+          const newFile = `${backupPath}/${process.env.backupFileName}-${dateFmt}.tar.gz`;
           const { stdout, stderr } = await exec(
-            `tar -cvzf ${newFile} ${db} ${fwl}`
+            `sudo tar -cvzf ${newFile} ${db} ${fwl}`
           );
           console.log('stdout:', stdout);
           console.log('stderr:', stderr);
