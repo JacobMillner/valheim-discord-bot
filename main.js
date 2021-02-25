@@ -50,11 +50,13 @@ bot.on('message', async (message) => {
           const dateFmt = `${year}-${month}-${day}`;
           const newFile = `${backupPath}/${process.env.backupFileName}-${dateFmt}.tar.gz`;
           const { stdout, stderr } = await exec(
-            `sudo tar -cvzf ${newFile} ${db} ${fwl}`
+            `tar -cvzf ${newFile} ${db} ${fwl}`
           );
           console.log('stdout:', stdout);
           console.log('stderr:', stderr);
-          message.channel.send(`World successfully backed up as ${newFile}`);
+          message.channel.send(
+            `World successfully backed up as ${process.env.backupFileName}-${dateFmt}.tar.gz`
+          );
         } catch (err) {
           console.log('Error backing up world.');
           console.log(err);
