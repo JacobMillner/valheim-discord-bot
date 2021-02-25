@@ -35,7 +35,10 @@ bot.on('message', async (message) => {
     case 'help':
       message.channel.send('**Stats** \n !stats');
       break;
-
+    case 'feed':
+      message.channel.send(`Thanks for the guac ${message.member}`);
+      message.channel.send('https://i.imgur.com/5TfODZo.jpgs');
+      break;
     case 'backup':
       if (message.member.hasPermission('ADMINISTRATOR')) {
         // back back back it up
