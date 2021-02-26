@@ -92,8 +92,9 @@ bot.on('message', async (message) => {
             `Server ID: ${data.id}
             Game: ${data.relationships.game.data.id}
             Server IP: ${data.attributes.ip}
-            Players: ${data.attributes.player}
-            Server Rank: ${data.attributes.rank}`
+            Players: ${data.attributes.players}
+            Server Rank: ${data.attributes.rank}
+            Server Password: ${process.env.serverPass}`
           );
         });
       }
