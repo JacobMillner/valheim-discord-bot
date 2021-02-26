@@ -39,6 +39,9 @@ bot.on('message', async (message) => {
       message.channel.send(`Thanks for the guac ${message.member}`);
       message.channel.send('https://i.imgur.com/5TfODZo.jpgs');
       break;
+    case 'setsail':
+      message.channel.send('https://i.imgur.com/YOE1hgz.jpg');
+    break;
     case 'backup':
       if (message.member.hasPermission('ADMINISTRATOR')) {
         // back back back it up
