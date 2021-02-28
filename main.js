@@ -4,10 +4,13 @@ var logger = require('winston');
 const axios = require('axios');
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
+const ConnectionLogs = require('server-events');
+const connectionLogs = new ConnectionLogs();
 
 var token = process.env.token;
 var serverName = process.env.serverName;
 const backupPath = process.env.backupLocation;
+const notifChannelId = process.env.notificationChannel;
 const db = `${backupPath}/${process.env.backupFileName}.db`;
 const fwl = `${backupPath}/${process.env.backupFileName}.fwl`;
 var prefix = '!';
@@ -21,9 +24,14 @@ logger.level = 'debug';
 var bot = new Discord.Client();
 bot.once('ready', function (evt) {
   logger.info('Connected!');
+  bot.channels.get(notifChannelId).send('I HAVE ARRIVED');
 });
 
 bot.login(token);
+
+connectionLogs.on('event', (event) => {
+  bot.channels.get(notifChannelId).send(event);
+});
 
 bot.on('message', async (message) => {
   if (!message.content.startsWith(prefix) || message.author.bot) return;
