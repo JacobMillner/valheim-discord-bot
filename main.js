@@ -27,11 +27,11 @@ bot.login(token);
 
 bot.once('ready', function (evt) {
   logger.info('Connected!');
-  bot.channels.get(notifChannelId).send('I HAVE ARRIVED');
+  bot.channels.cache..get(notifChannelId).send('I HAVE ARRIVED');
 });
 
 connectionLogs.on('event', (event) => {
-  bot.channels.get(notifChannelId).send(event);
+  bot.channels.cache..get(notifChannelId).send(event);
 });
 
 bot.on('message', async (message) => {
