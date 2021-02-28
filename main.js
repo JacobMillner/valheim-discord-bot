@@ -25,13 +25,17 @@ var bot = new Discord.Client();
 
 bot.login(token);
 
+const notifChannel = await bot.channels.cache.find(
+  (x) => x.id == notifChannelId
+);
+
 bot.once('ready', function (evt) {
   logger.info('Connected!');
-  bot.channels.cache.get(notifChannelId).send('I HAVE ARRIVED');
+  notifChannel.send('I HAVE ARRIVED');
 });
 
 connectionLogs.on('event', (event) => {
-  bot.channels.cache.get(notifChannelId).send(event);
+  notifChannel.send(event);
 });
 
 bot.on('message', async (message) => {
