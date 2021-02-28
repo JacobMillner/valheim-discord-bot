@@ -4,7 +4,7 @@ var logger = require('winston');
 const axios = require('axios');
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
-const ConnectionLogs = require('server-events');
+const ConnectionLogs = require('./utils/server-events');
 const connectionLogs = new ConnectionLogs();
 
 var token = process.env.token;
