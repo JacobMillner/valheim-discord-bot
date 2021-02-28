@@ -25,12 +25,11 @@ var bot = new Discord.Client();
 
 bot.login(token);
 
-const notifChannel = await bot.channels.cache.find(
-  (x) => x.id == notifChannelId
-);
-
-bot.once('ready', function (evt) {
+bot.once('ready', async function (evt) {
   logger.info('Connected!');
+  const notifChannel = await bot.channels.cache.find(
+    (x) => x.id == notifChannelId
+  );
   notifChannel.send('I HAVE ARRIVED');
 });
 
@@ -39,6 +38,9 @@ connectionLogs.on('event', (event) => {
 });
 
 bot.on('message', async (message) => {
+  const notifChannel = await bot.channels.cache.find(
+    (x) => x.id == notifChannelId
+  );
   if (!message.content.startsWith(prefix) || message.author.bot) return;
 
   const args = message.content.slice(prefix.length).split(' ');
