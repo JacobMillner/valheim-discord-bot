@@ -21,13 +21,13 @@ logger.add(new logger.transports.Console(), {
 });
 logger.level = 'debug';
 
+bot.login(token);
+
 var bot = new Discord.Client();
 bot.once('ready', function (evt) {
   logger.info('Connected!');
   bot.channels.get(notifChannelId).send('I HAVE ARRIVED');
 });
-
-bot.login(token);
 
 connectionLogs.on('event', (event) => {
   bot.channels.get(notifChannelId).send(event);
