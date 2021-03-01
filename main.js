@@ -33,7 +33,11 @@ bot.once('ready', async function (evt) {
   notifChannel.send('I HAVE ARRIVED!');
 });
 
-connectionLogs.on('event', (event) => {
+connectionLogs.on('event', async (event) => {
+  const notifChannel = await bot.channels.cache.find(
+    (x) => x.id == notifChannelId
+  );
+  console.log('server event: ', event);
   notifChannel.send(event);
 });
 
