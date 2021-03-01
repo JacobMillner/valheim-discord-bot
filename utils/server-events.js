@@ -16,10 +16,15 @@ function ConnectionLog() {
   ];
 
   // start journalctl
-  this.ConnectionLog = childProcess.spawn('journalctl', args);
-
+  console.log('Starting Connection log!');
+  try {
+    this.ConnectionLog = childProcess.spawn('journalctl', args);
+  } catch (e) {
+    console.log('error starting connection log: ', e);
+  }
   // Setup decoder
   const decoder = new JSONStream((e) => {
+    console.log('journalctl event: ', e);
     this.emit('event', e);
   });
   this.ConnectionLog.stdout.on('data', (chunk) => {
